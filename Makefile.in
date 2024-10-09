@@ -20,7 +20,7 @@ LDFLAGS = @LDFLAGS@ \
 
 DISTNAME = @PACKAGE_TARNAME@-@PACKAGE_VERSION@
 
-TARGETS  = cpabe-setup   cpabe-enc   cpabe-keygen   cpabe-dec
+TARGETS  = cpabe-setup cpabe-setup.so  cpabe-enc cpabe-enc.so   cpabe-keygen cpabe-keygen.so   cpabe-dec cpabe-dec.so
 DEVTARGS = test-lang TAGS
 
 MANUALS  = $(TARGETS:=.1)
@@ -32,21 +32,25 @@ all: $(TARGETS) $(DEVTARGS)
 
 cpabe-setup: setup.o common.o
 	$(CC) -o $@ $^ $(LDFLAGS)
-
+cpabe-setup.so: setup.o common.o
+	$(CC) -o $@ $^ $(LDFLAGS) -shared
 cpabe-enc: enc.o common.o policy_lang.o
 	$(CC) -o $@ $^ $(LDFLAGS)
-
+cpabe-enc.so: enc.o common.o policy_lang.o 
+	$(CC) -o $@ $^ $(LDFLAGS) -shared
 cpabe-keygen: keygen.o common.o policy_lang.o
-	$(CC) -o $@ $^ $(LDFLAGS)
-
+	$(CC) -o $@ $^ $(LDFLAGS) 
+cpabe-keygen.so: keygen.o common.o policy_lang.o
+	$(CC) -o $@ $^ $(LDFLAGS) -shared
 cpabe-dec: dec.o common.o
 	$(CC) -o $@ $^ $(LDFLAGS)
-
+cpabe-dec.so: dec.o common.o
+	$(CC) -o $@ $^ $(LDFLAGS) -shared
 test-lang: test-lang.o common.o policy_lang.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 %.o: %.c *.h Makefile
-	$(CC) -c -o $@ $< $(CFLAGS)
+	$(CC) -c -o $@ $< $(CFLAGS) -fpic
 
 # installation
 
