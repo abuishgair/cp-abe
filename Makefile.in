@@ -50,7 +50,7 @@ test-lang: test-lang.o common.o policy_lang.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 %.o: %.c *.h Makefile
-	$(CC) -c -o $@ $< $(CFLAGS) -fpic
+	$(CC) -c -o $@ $< $(CFLAGS) -fPIC
 
 # installation
 
